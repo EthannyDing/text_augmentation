@@ -32,6 +32,32 @@ def excel_io(file, action='r', write_df=None, columns=["source", "target"]):
         print(f"Action {action} not supported")
 
 
+def save_terms_as_pickle(data, pickle_dir):
+    """Serialize data into pickle file."""
+    print("Saving terms to pickle file...")
+    try:
+        file = open(pickle_dir, 'wb')
+        pickle.dump(data, file)
+        file.close()
+    except:
+        raise Exception("Failed to save terms in pickle.")
+    print("Terms saved.")
+
+
+def loads_terms_from_pickle(pickle_dir):
+    """Load serialized data from pickle file."""
+    print("Loading terms from pickle file...")
+    try:
+        file = open(pickle_dir, 'rb')
+        data = pickle.load(file)
+        file.close()
+    except:
+        raise Exception("Failed to load terms from pickle.")
+    print("Terms loaded.")
+
+    return data
+
+
 def writeToTmxFile(outputPath, pairs, srcLang, tgtLang, segType='seg', encoding='utf8'):
     """Write to TMX (XML) file
 

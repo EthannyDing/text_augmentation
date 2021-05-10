@@ -1,2 +1,2 @@
-from text_augmentation.text_augmentation.text_augmentation import EasyAugmentation, EasyAugmentationFrench
+from text_augmentation.augment import EasyAugmentation, EasyAugmentationFrench
 import unittest

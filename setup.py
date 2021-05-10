@@ -4,6 +4,7 @@ setup(
     name="text_augmentation",
     version="1.0.0",
     author="Ethan Ding",
+    url="https://github.com/EthannyDing/text_augmentation",
     author_email="ethanding1994@gmail.com",
     packages=find_packages(where="."),
     include_package_data=True,
