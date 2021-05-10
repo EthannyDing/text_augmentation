@@ -6,7 +6,7 @@ import pprint
 from bs4 import BeautifulSoup
 from lxml import etree
 from datetime import date
-# from .terms_io import loads_terms_from_pickle
+from text_augmentation.utils.file_io import loads_terms_from_pickle
 
 
 class TmFileParser(object):

@@ -1,0 +1,7 @@
+# spacy
+# numpy
+# pandas
+html_text
+bs4
+datetime
+lxml

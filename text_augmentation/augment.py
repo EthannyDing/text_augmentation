@@ -4,7 +4,7 @@ import random
 import numpy as np
 # import pandas as pd
 # import spacy
-from utils.file_io import txt_io, excel_io
+from text_augmentation.utils.file_io import txt_io, excel_io
 # import tensorflow as tf
 
 """
@@ -280,7 +280,7 @@ def test_pipeline():
     input_files = ["/linguistics/ethan/DL_Prototype/datasets/TB_TQA/tb_Human_QA_finance_202102.good.eng",
                    "/linguistics/ethan/DL_Prototype/datasets/TB_TQA/tb_Human_QA_finance_202102.good.fra"]
     output_file = "/linguistics/ethan/DL_Prototype/text_augmentation/augmented/examples.bad.xlsx"
-    vocab_path = "/linguistics/ethan/DL_Prototype/text_augmentation/vocab/vocab.fra"
+    vocab_path = "/linguistics/ethan/DL_Prototype/text_augmentation/text_augmentation/vocab/vocab.fra"
     pipe = EasyAugmentationPipeline()
     pipe.create_bad_instance_from_good(input_files, vocab_path, alter_source=False, num_instances=1000)
     pipe.save_new_data(output_file)
