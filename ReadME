@@ -3,3 +3,27 @@ This repository focuses on text augmentation for monolingual or bilingual text d
 Installation
 
 $ python -m pip install git+https://github.com/EthannyDing/text_augmentation.git
+
+Examples
+
+Original   : Gestion en delta neutre
+replacement: fictive en incertaines neutre
+
+Original   : actionnaire dissident
+replacement: actionnaire suivantes
+
+Original   : Système de compensation
+insertion  : Système de Resource évalué compensation
+
+Original   : appeler au rachat
+deletion   : appeler rachat
+
+Original   : environnement interne
+add_article: un environnement interne
+
+Original   : acquisition défensive
+replacement: acquisition évalués
+
+Original   : Mise en pension
+swapping   : en Mise pension
+
