@@ -122,3 +122,21 @@ def writeToTmxFile(outputPath, pairs, srcLang, tgtLang, segType='seg', encoding=
         return False
 
 
+def merge_monolingual_txt_into_one(rootpath, output_file):
+
+    final_lines = []
+    for file in os.listdir(rootpath):
+        filepath = os.path.join(rootpath, file)
+        if os.path.isfile(filepath):
+            lines = txt_io(filepath, action='r')
+            final_lines += lines
+
+    final_lines = list(dict.fromkeys(final_lines))
+    print("{} final lines".format(len(final_lines)))
+    txt_io(output_file, action='w', write_lines=final_lines)
+
+
+if __name__ == "__main__":
+    rootpath = "/linguistics/ethan/DL_Prototype/datasets/TB_TQA"
+    output_file = "/linguistics/ethan/DL_Prototype/datasets/TB_TQA/good_merged.fra"
+    merge_monolingual_txt_into_one(rootpath, output_file)

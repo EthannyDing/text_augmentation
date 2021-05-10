@@ -149,6 +149,7 @@ class EasyAugmentationFrench(EasyAugmentation):
            otherwise, replace current article with another."""
         words = text.split()
         all_articles = self.articles
+
         if article == "random":
             first_word = words[0].lower()
             first_two_words = " ".join(words[:2]).lower()
@@ -202,6 +203,16 @@ class EasyAugmentationPipeline(EasyAugmentationFrench):
 
         print("\n{} parallel data read".format(len(self.input_data)))
 
+    def save_new_data(self, output_file):
+        # df = pd.DataFrame(self.new_data, columns=["source", "target"])
+        if (type(output_file) is list) and len(output_file) == 2:
+            txt_io(output_file[0], action='w', write_lines=[p[0] for p in self.new_data])
+            txt_io(output_file[1], action='w', write_lines=[p[1] for p in self.new_data])
+        elif (type(output_file) is str) and (os.path.splitext(output_file)[1] == ".xlsx"):
+            excel_io(output_file, action='w', write_df=self.new_data)
+        else:
+            raise Exception("output file not supported.")
+
     def create_bad_instance_from_good(self,
                                       original_files,
                                       vocab_path,
@@ -211,13 +222,18 @@ class EasyAugmentationPipeline(EasyAugmentationFrench):
             :arg original_files: input original TM/TB file
             :arg vocab_path: vocab filepath of specified src or tgt language.
             :arg lang: text of which language will be used to create bad instances.
-            :arg randomly: randomly create bad instances or not."""
+            :arg randomly: randomly create bad instances or not.
+            :arg num_instances: number of instance to create."""
         self.read_files(original_files)
         self.vocab_path = vocab_path  # load specified
         self.load_vocab()
+        num_created = 0
+        length = len(self.input_data)
 
-        for j, i in enumerate(np.random.randint(0, len(self.input_data), num_instances)):
-            src, tgt = self.input_data[i]
+        while num_created < num_instances:
+        # for j, i in enumerate(np.random.randint(0, len(self.input_data), num_instances)):
+            ind = random.choice(range(length))
+            src, tgt = self.input_data[ind]
             method = random.choice(self.methods)
             fra_method = None
             param = random.choice(range(1, 3))
@@ -238,17 +254,16 @@ class EasyAugmentationPipeline(EasyAugmentationFrench):
 
             method_used = fra_method if fra_method else method
             print("{}: {}".format(method_used, new_text))
-            self.new_data.append(new_pair)
 
-    def save_new_data(self, output_file):
-        # df = pd.DataFrame(self.new_data, columns=["source", "target"])
-        excel_io(output_file, action='w', write_df=self.new_data)
+            if (src, tgt) != new_pair:
+                self.new_data.append(new_pair)
+                num_created += 1
 
 
 def test_create_vocab():
 
-    vocab_file = "/linguistics/ethan/DL_Prototype/text_augmentation/vocab/vocab.fra"
-    text_filepath = "/linguistics/ethan/DL_Prototype/datasets/TB_TQA/CPA_tb_QA_202103_shuffle.good.fra"
+    vocab_file = "/linguistics/ethan/DL_Prototype/text_augmentation/text_augmentation/vocab/final_vocab.fra"
+    text_filepath = "/linguistics/ethan/DL_Prototype/datasets/TB_TQA/good_merged.fra"
     ea = EasyAugmentation()
     ea.create_vocab_from_file(text_filepath)
     ea.save_vacab(vocab_file)
@@ -276,13 +291,14 @@ def test_frenchTextAug():
     print("Add Article: {}".format(eaf.add_article(text, article="random")))
 
 def test_pipeline():
-
-    input_files = ["/linguistics/ethan/DL_Prototype/datasets/TB_TQA/tb_Human_QA_finance_202102.good.eng",
-                   "/linguistics/ethan/DL_Prototype/datasets/TB_TQA/tb_Human_QA_finance_202102.good.fra"]
-    output_file = "/linguistics/ethan/DL_Prototype/text_augmentation/augmented/examples.bad.xlsx"
-    vocab_path = "/linguistics/ethan/DL_Prototype/text_augmentation/text_augmentation/vocab/vocab.fra"
+    rootpath = "/linguistics/ethan/DL_Prototype/datasets/TB_TQA/"
+    input_files = [os.path.join(rootpath, "train/20210510.good.eng"),
+                   os.path.join(rootpath, "train/20210510.good.fra")]
+    output_file = [os.path.join(rootpath, "synthetic/20210510.bad.eng"),
+                   os.path.join(rootpath, "synthetic/20210510.bad.fra")]
+    vocab_path = "/linguistics/ethan/DL_Prototype/text_augmentation/text_augmentation/vocab/final_vocab.fra"
     pipe = EasyAugmentationPipeline()
-    pipe.create_bad_instance_from_good(input_files, vocab_path, alter_source=False, num_instances=1000)
+    pipe.create_bad_instance_from_good(input_files, vocab_path, alter_source=False, num_instances=14572)
     pipe.save_new_data(output_file)
 
 if __name__ == "__main__":
