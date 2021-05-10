@@ -1,1 +1,5 @@
 This repository focuses on text augmentation for monolingual or bilingual text data. This can be a preliminary work you can do before training a NLP/ML machine when you have insufficient text data. It helps create synthetic data based on your input text by randomly altering the structure of your text to generated new ones, on the word level.
+
+Installation
+
+$ python -m pip install git+https://github.com/EthannyDing/text_augmentation.git

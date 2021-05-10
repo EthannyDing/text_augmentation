@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="text_augmentation",
-    version="1.0.2",
+    version="1.0.3",
     author="Ethan Ding",
     url="https://github.com/EthannyDing/text_augmentation",
     author_email="ethanding1994@gmail.com",
